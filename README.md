@@ -1,4 +1,4 @@
-### Algorithms4 Study Project.
+### Algorithms4 Study Project
 
 part of the code from the Algorithms4 by  Robert Sedgewick and Kevin Wayne.
 
