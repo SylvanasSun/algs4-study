@@ -68,9 +68,9 @@ public class Queue<T> implements Iterable<T> {
     public T dequeue() {
         T item = first.item;
         first = first.next;
+        N--;
         //如果队列为空,队尾则为null
         if (isEmpty()) last = null;
-        N--;
         return item;
     }
 
