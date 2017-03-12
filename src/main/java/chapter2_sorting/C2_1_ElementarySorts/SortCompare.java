@@ -1,5 +1,6 @@
 package chapter2_sorting.C2_1_ElementarySorts;
 
+import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
 /**
@@ -38,6 +39,9 @@ public class SortCompare {
         return total;
     }
 
+    /**
+     * args:Insertion Selection 1000 100
+     */
     public static void main(String[] args) {
         String alg1 = args[0];
         String alg2 = args[1];
