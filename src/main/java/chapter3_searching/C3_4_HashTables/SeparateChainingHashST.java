@@ -24,7 +24,7 @@ public class SeparateChainingHashST<K, V> {
     private class Node<K, V> {
         private K key;
         private V value;
-        private Node next;
+        private Node<K,V> next;
 
         public Node() {
 
