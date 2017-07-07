@@ -59,7 +59,7 @@ public class DepthFirstSearch {
         this.graph = graph;
         this.count = 0;
         this.marked = new boolean[graph.vertex()];
-        valiadateVertex(originPoint);
+        validateVertex(originPoint);
         depthSearch(originPoint);
     }
 
@@ -80,7 +80,7 @@ public class DepthFirstSearch {
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
     public boolean marked(int vertex) {
-        valiadateVertex(vertex);
+        validateVertex(vertex);
         return marked[vertex];
     }
 
@@ -93,10 +93,10 @@ public class DepthFirstSearch {
         }
     }
 
-    private void valiadateVertex(int vertex) {
+    private void validateVertex(int vertex) {
         int length = marked.length;
         if (vertex < 0 || vertex >= length)
-            throw new IllegalArgumentException("Vertex " + vertex + " is not between 0 and " + (vertex - 1));
+            throw new IllegalArgumentException("Vertex " + vertex + " is not between 0 and " + (length - 1));
     }
 
     public static void main(String[] args) {
