@@ -37,7 +37,6 @@ package chapter4_graphs.C4_1_UndirectedGraphs;
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.Bag;
-import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
 
 import java.io.FileNotFoundException;
@@ -244,7 +243,7 @@ public class UndirectedGraph implements Graph {
      */
     public static void main(String[] args) throws FileNotFoundException {
         InputStream inputStream =
-                UndirectedGraph.class.getResourceAsStream("/graph_file/C4_1_UndirectedGraphs/tinyG.txt");
+                UndirectedGraph.class.getResourceAsStream("/graph_file/C4_1_UndirectedGraphs/" + args[0]);
         Scanner scanner = new Scanner(inputStream, "UTF-8");
         Graph graph = new UndirectedGraph(scanner);
         System.out.println(graph);
