@@ -43,7 +43,7 @@ package chapter4_graphs.C4_2_DirectedGraphs;
  * Afterwards, the <em>hasOrder</em> and <em>rank</em> operations takes constant time;
  * the <em>order</em> operation takes time proportional to <em>V</em>.
  * <p>
- * See {@link DirectedCycle}, {@link DirectedCycleX}, and
+ * See {@link DirectedCycle}, {@link NonrecursiveDirectedCycle}, and
  * {@link EdgeWeightedDirectedCycle} to compute a
  * directed cycle if the digraph is not a DAG.
  * See {@link TopologicalX} for a nonrecursive queue-based algorithm
