@@ -87,12 +87,13 @@ public class SymbolGraph {
      * @param delimiter the delimiter between fields
      */
     public SymbolGraph(String filename, String delimiter) {
+        validateString(new String[]{filename, delimiter});
+
         symbolTable = new TreeMap<>();
 
         // read file
-        String filePath = "/graph_file/C4_1_UndirectedGraphs/" + filename;
         InputStream inputStream
-                = SymbolGraph.class.getResourceAsStream(filePath);
+                = SymbolGraph.class.getResourceAsStream(filename);
         Scanner scanner = new Scanner(inputStream, "UTF-8");
 
         // builds the index by reading strings to associate
@@ -112,7 +113,7 @@ public class SymbolGraph {
 
         // builds the graph by connecting first vertex on each line to all others
         graph = new UndirectedGraph(symbolTable.size());
-        Scanner create_graph_scanner = new Scanner(SymbolGraph.class.getResourceAsStream(filePath));
+        Scanner create_graph_scanner = new Scanner(SymbolGraph.class.getResourceAsStream(filename));
         while (create_graph_scanner.hasNextLine()) {
             String[] s = create_graph_scanner.nextLine().split(delimiter);
             int v = symbolTable.get(s[0]);
@@ -171,8 +172,16 @@ public class SymbolGraph {
             throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
     }
 
+    private void validateString(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            if ("".equals(arg) || arg == null)
+                throw new IllegalArgumentException(String.format("String arg %s is not empty or null!", arg));
+        }
+    }
+
     public static void main(String[] args) {
-        String filename = args[0];
+        String filename = "/graph_file/C4_1_UndirectedGraphs/" + args[0];
         String delimiter = args[1];
         SymbolGraph symbolGraph = new SymbolGraph(filename, delimiter);
         Graph graph = symbolGraph.graph();
