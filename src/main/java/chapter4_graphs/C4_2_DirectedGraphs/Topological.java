@@ -139,7 +139,12 @@ public class Topological {
     }
 
     public static void main(String[] args) {
-
+        String filename = "/graph_file/C4_2_DirectedGraphs/" + args[0];
+        String delimiter = args[1];
+        SymbolDigraph symbolDigraph = new SymbolDigraph(filename, delimiter);
+        Topological topological = new Topological(symbolDigraph.digraph());
+        for (int v : topological.order())
+            System.out.println(symbolDigraph.nameOf(v));
     }
 
 }
