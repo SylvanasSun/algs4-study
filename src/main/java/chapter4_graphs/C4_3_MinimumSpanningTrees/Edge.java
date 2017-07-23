@@ -9,8 +9,6 @@ package chapter4_graphs.C4_3_MinimumSpanningTrees;
  *
  ******************************************************************************/
 
-import chapter1_fundamentals.C1_4_AnalysisOfAlgorithms.DoublingRatio;
-
 /**
  * The {@code Edge} class represents a weighted edge in an
  * {@link EdgeWeightedGraph}. Each edge consists of two integers
