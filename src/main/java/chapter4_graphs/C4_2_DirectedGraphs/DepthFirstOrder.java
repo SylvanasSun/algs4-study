@@ -1,6 +1,8 @@
 package chapter4_graphs.C4_2_DirectedGraphs;
 
 import chapter4_graphs.C4_1_UndirectedGraphs.Graph;
+import chapter4_graphs.C4_4_ShortestPaths.DirectedEdge;
+import chapter4_graphs.C4_4_ShortestPaths.EdgeWeightedDigraph;
 import edu.princeton.cs.algs4.Stack;
 
 import java.io.InputStream;
@@ -62,7 +64,7 @@ import java.util.Scanner;
  */
 public class DepthFirstOrder {
 
-    private final Graph graph;
+    private Graph graph;
 
     // marked[v] = has v been marked in dfs?
     private final boolean[] marked;
@@ -104,6 +106,23 @@ public class DepthFirstOrder {
 
         assert check();
     }
+
+
+    /**
+     * Determines a depth-first order for the edge-weighted digraph {@code G}.
+     *
+     * @param G the edge-weighted digraph
+     */
+    public DepthFirstOrder(EdgeWeightedDigraph G) {
+        pre = new int[G.vertex()];
+        post = new int[G.vertex()];
+        postorder = new ArrayDeque<>();
+        preorder = new ArrayDeque<>();
+        marked = new boolean[G.vertex()];
+        for (int v = 0; v < G.vertex(); v++)
+            if (!marked[v]) dfs(G, v);
+    }
+
 
     /**
      * Returns the preorder number of vertex {@code v}.
@@ -170,6 +189,21 @@ public class DepthFirstOrder {
         }
         post[vertex] = postCounter++;
         postorder.add(vertex);
+    }
+
+    // run DFS in edge-weighted digraph G from vertex v and compute preorder/postorder
+    private void dfs(EdgeWeightedDigraph G, int v) {
+        marked[v] = true;
+        pre[v] = preCounter++;
+        preorder.add(v);
+        for (DirectedEdge e : G.adj(v)) {
+            int w = e.to();
+            if (!marked[w]) {
+                dfs(G, w);
+            }
+        }
+        postorder.add(v);
+        post[v] = postCounter++;
     }
 
     // check that pre() and post() are consistent with pre(v) and post(v)

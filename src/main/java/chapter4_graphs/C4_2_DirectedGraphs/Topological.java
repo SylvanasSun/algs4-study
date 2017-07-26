@@ -28,6 +28,9 @@ package chapter4_graphs.C4_2_DirectedGraphs;
  *
  ******************************************************************************/
 
+import chapter4_graphs.C4_4_ShortestPaths.EdgeWeightedDigraph;
+import chapter4_graphs.C4_4_ShortestPaths.EdgeWeightedDirectedCycle;
+
 /**
  * The {@code Topological} class represents a data type for
  * determining a topological order of a directed acyclic graph (DAG).
@@ -79,6 +82,20 @@ public class Topological {
             int i = 0;
             for (int v : order)
                 rank[v] = i++;
+        }
+    }
+
+    /**
+     * Determines whether the edge-weighted digraph {@code G} has a topological
+     * order and, if so, finds such an order.
+     *
+     * @param G the edge-weighted digraph
+     */
+    public Topological(EdgeWeightedDigraph G) {
+        EdgeWeightedDirectedCycle finder = new EdgeWeightedDirectedCycle(G);
+        if (!finder.hasCycle()) {
+            DepthFirstOrder dfs = new DepthFirstOrder(G);
+            order = dfs.reversePost();
         }
     }
 
