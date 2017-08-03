@@ -20,6 +20,9 @@ package chapter5_strings.C5_2_Tries;
  *
  ******************************************************************************/
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 /**
  * The {@code TrieST} class represents an symbol table of key-value
  * pairs, with string keys and generic values.
@@ -107,6 +110,33 @@ public class TrieST<Value> {
     }
 
     /**
+     * Inserts the key-value pair into the symbol table, overwriting the old value
+     * with the new value if the key is already in the symbol table.
+     * If the value is {@code null}, this effectively deletes the key from the symbol table.
+     *
+     * @param key   the key
+     * @param value the value
+     * @throws IllegalArgumentException if {@code key} is {@code null}
+     */
+    public void put(String key, Value value) {
+        validateKey(key, "first argument to put() is null.");
+        if (value == null) delete(key);
+        else root = put(root, key, value, 0);
+    }
+
+    private Node put(Node x, String key, Value value, int d) {
+        if (x == null) x = new Node();
+        if (d == key.length()) {
+            if (x.value == null) N++;
+            x.value = value;
+            return x;
+        }
+        char c = key.charAt(d);
+        x.next[c] = put(x.next[c], key, value, d + 1);
+        return x;
+    }
+
+    /**
      * Removes the key from the set if the key is present.
      *
      * @param key the key
@@ -152,6 +182,105 @@ public class TrieST<Value> {
      */
     public boolean isEmpty() {
         return N == 0;
+    }
+
+    /**
+     * Returns all keys in the symbol table as an {@code Iterable}.
+     * To iterate over all of the keys in the symbol table named {@code st},
+     * use the foreach notation: {@code for (Key key : st.keys())}.
+     *
+     * @return all keys in the symbol table as an {@code Iterable}
+     */
+    public Iterable<String> keys() {
+        return keysWithPrefix("");
+    }
+
+    /**
+     * Returns all of the keys in the set that start with {@code prefix}.
+     *
+     * @param prefix the prefix
+     * @return all of the keys in the set that start with {@code prefix},
+     * as an iterable
+     */
+    public Iterable<String> keysWithPrefix(String prefix) {
+        Queue<String> results = new ArrayDeque<>();
+        Node x = get(root, prefix, 0);
+        collect(x, new StringBuilder(prefix), results);
+        return results;
+    }
+
+    /**
+     * Returns all of the keys in the symbol table that match {@code pattern},
+     * where . symbol is treated as a wildcard character.
+     *
+     * @param pattern the pattern
+     * @return all of the keys in the symbol table that match {@code pattern},
+     * as an iterable, where . is treated as a wildcard character.
+     */
+    public Iterable<String> keysThatMatch(String pattern) {
+        Queue<String> results = new ArrayDeque<>();
+        collect(root, new StringBuilder(), pattern, results);
+        return results;
+    }
+
+    /**
+     * Returns the string in the symbol table that is the longest prefix of {@code query},
+     * or {@code null}, if no such string.
+     *
+     * @param query the query string
+     * @return the string in the symbol table that is the longest prefix of {@code query},
+     * or {@code null} if no such string
+     * @throws IllegalArgumentException if {@code query} is {@code null}
+     */
+    public String longestPrefixOf(String query) {
+        validateKey(query, "argument to longestPrefixOf() is null.");
+        int length = longestPrefixOf(root, query, 0, -1);
+        if (length == -1) return null;
+        else return query.substring(0, length);
+    }
+
+    // returns the length of the longest string key in the subtrie
+    // rooted at x that is a prefix of the query string,
+    // assuming the first d character match and we have already
+    // found a prefix match of given length (-1 if no such match)
+    private int longestPrefixOf(Node x, String query, int d, int length) {
+        if (x == null) return length;
+        if (x.value != null) length = d;
+        if (d == query.length()) return length;
+        char c = query.charAt(d);
+        return longestPrefixOf(x.next[c], query, d + 1, length);
+    }
+
+    private void collect(Node x, StringBuilder prefix, Queue<String> results) {
+        if (x == null) return;
+        if (x.value != null) results.add(prefix.toString());
+        for (char c = 0; c < R; c++) {
+            prefix.append(c);
+            collect(x.next[c], prefix, results);
+            prefix.deleteCharAt(prefix.length() - 1);
+        }
+    }
+
+    private void collect(Node x, StringBuilder prefix, String pattern, Queue<String> results) {
+        if (x == null) return;
+        int d = prefix.length();
+        if (d == pattern.length() && x.value != null)
+            results.add(prefix.toString());
+        if (d == pattern.length())
+            return;
+
+        char c = pattern.charAt(d);
+        if (c == '.') {
+            for (char ch = 0; ch < R; ch++) {
+                prefix.append(c);
+                collect(x.next[ch], prefix, pattern, results);
+                prefix.deleteCharAt(prefix.length() - 1);
+            }
+        } else {
+            prefix.append(c);
+            collect(x.next[c], prefix, pattern, results);
+            prefix.deleteCharAt(prefix.length() - 1);
+        }
     }
 
     private void validateKey(String key, String message) {
