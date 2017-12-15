@@ -242,8 +242,8 @@ public class BTree<Key extends Comparable<Key>, Value> {
         return s.toString();
     }
 
-    private void validateKey(Key key, String meesage) {
-        if (key == null) throw new IllegalArgumentException(meesage);
+    private void validateKey(Key key, String message) {
+        if (key == null) throw new IllegalArgumentException(message);
     }
 
 
